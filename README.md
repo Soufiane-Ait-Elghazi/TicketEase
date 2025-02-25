@@ -50,7 +50,7 @@ TicketEase is a ticket management system designed for efficient issue tracking. 
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/your-repo/TicketEase.git
+git clone https://github.com/Soufiane-Ait-Elghazi/TicketEase.git
 cd TicketEase
 ```
 
