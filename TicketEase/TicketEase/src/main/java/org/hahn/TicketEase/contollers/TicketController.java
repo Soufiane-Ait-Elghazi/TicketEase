@@ -14,7 +14,6 @@ import org.hahn.TicketEase.dtos.TicketDto;
 import org.hahn.TicketEase.entities.Ticket;
 import org.hahn.TicketEase.entities.TicketCategory;
 import org.hahn.TicketEase.services.ticketService.TicketService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -110,6 +109,32 @@ public class TicketController {
             return new ResponseEntity<>(savedTicket, HttpStatus.CREATED);
         } else {
             log.error("Failed to save Ticket : {}", ticket);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PutMapping("/updateTicket/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_EMPLOYEE')")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "Ticket Updated", content = {
+                            @Content(mediaType = "application/json", schema = @Schema(implementation = TicketCategory.class))
+                    }),
+                    @ApiResponse(responseCode = "400", description = "Invalid request", content = @Content),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized invalid authentication rights", content = @Content),
+                    @ApiResponse(responseCode = "403", description = "Unauthorized invalid authentication rights", content = @Content),
+                    @ApiResponse(responseCode = "404", description = "Resource not found", content = @Content)
+            })
+    @Operation(summary = "Springdoc OpenAPI sample API")
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id , @RequestBody TicketDto ticket , Authentication authentication) {
+        log.info("Update Ticket : {}", ticket);
+        Ticket savedTicket = ticketService.updateTicket(id,ticket ,authentication);
+
+        if (savedTicket != null) {
+            log.info("Ticket updated successfully with ID: {}", savedTicket.getId());
+            return new ResponseEntity<>(savedTicket, HttpStatus.CREATED);
+        } else {
+            log.error("Failed to update Ticket : {}", ticket);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

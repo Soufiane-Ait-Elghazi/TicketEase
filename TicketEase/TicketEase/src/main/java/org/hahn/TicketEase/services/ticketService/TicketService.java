@@ -17,7 +17,7 @@ public interface TicketService {
     Ticket saveTicket(TicketDto ticket , Authentication authentication);
     Ticket getTicketById(Long id , Authentication authentication);
     Page<Ticket> getAllTickets(Pageable pageable , Authentication authentication);
-    Optional<Ticket> updateTicket(Long id, Ticket ticket);
+    Ticket updateTicket(Long id, TicketDto ticketDto , Authentication authentication);
     boolean deleteTicket(Long id);
     Page<Ticket> getTicketWithFilter(Pageable pageable, SearchTicketFormDto searchTicketFormDto, Authentication authentication);
 

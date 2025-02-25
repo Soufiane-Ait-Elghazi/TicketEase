@@ -1,5 +1,6 @@
 package org.hahen.ticketEase.components;
 
+import org.hahen.ticketEase.configurations.GlobalVariables;
 import org.hahen.ticketEase.pages.DashBoardPage;
 import org.hahen.ticketEase.services.AuthenticationService;
 
@@ -53,7 +54,7 @@ public class SidebarComponent extends JPanel {
         // Button click event
         button.addActionListener(e -> {
             try {
-                dashBoardPage.switchPage(pageName,dashBoardPage);
+                GlobalVariables.GLOBAL_DashBoard.switchPage(pageName);
             } catch (Exception ex) {
                 throw new RuntimeException(ex);
             }

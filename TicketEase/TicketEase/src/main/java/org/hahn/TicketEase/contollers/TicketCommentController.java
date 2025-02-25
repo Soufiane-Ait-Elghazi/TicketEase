@@ -33,7 +33,7 @@ public class TicketCommentController {
 
 
     @PostMapping("/saveTicketComment/{id}")
-    @PreAuthorize("hasAnyAuthority('SCOPE_IT_SUPPORT')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_EMPLOYEE')")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Ticket Comment Created", content = {
@@ -106,7 +106,7 @@ public class TicketCommentController {
 
 
     @PutMapping("/comments/{id}")
-    @PreAuthorize("hasAnyAuthority('SCOPE_IT_SUPPORT')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_EMPLOYEE')")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Successfully updated ticket Comment", content = {
@@ -129,7 +129,7 @@ public class TicketCommentController {
 
 
     @DeleteMapping("/comments/{id}")
-    @PreAuthorize("hasAnyAuthority('SCOPE_IT_SUPPORT')")
+    @PreAuthorize("hasAnyAuthority('SCOPE_EMPLOYEE')")
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Successfully deleted ticket Comment"),

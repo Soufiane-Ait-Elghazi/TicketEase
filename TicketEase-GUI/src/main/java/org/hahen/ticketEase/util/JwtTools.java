@@ -30,5 +30,24 @@ public class JwtTools {
         }
 
 
+    public static boolean hasItSupportScope(String jwtToken) {
+        try {
+            String[] parts = jwtToken.split("\\.");
+            if (parts.length < 2) {
+                throw new IllegalArgumentException("Invalid JWT token");
+            }
+            String payloadJson = new String(Base64.getDecoder().decode(parts[1]));
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(payloadJson);
+            JsonNode scopeNode = jsonNode.get("scope");
+            String scope = scopeNode != null ? scopeNode.asText() : null;
+            return scope != null && scope.contains("IT_SUPPORT");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+     }
+
+
     }
 

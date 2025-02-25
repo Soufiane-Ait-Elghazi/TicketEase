@@ -40,6 +40,7 @@ public class TicketServiceImpl implements TicketService{
         ticket.setKey("SIA"+ BuiltInFunctions.generateRandomSixDigit());
         ticket.setStatus(TicketStatus.NEW);
         ticket.setCategory(ticketCategory);
+        ticket.setPriority(TicketPriority.valueOf(ticketDto.getPriority()));
         return ticketRepository.save(ticket);
     }
 
@@ -65,16 +66,29 @@ public class TicketServiceImpl implements TicketService{
     public Page<Ticket> getAllTickets(Pageable pageable, Authentication authentication) {
         boolean hasItSupportRole = authentication.getAuthorities().stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("SCOPE_IT_SUPPORT"));
-        if (hasItSupportRole) {
-            return ticketRepository.findAll(pageable);
-        } else {
-            return ticketRepository.findByCreatedBy(authentication.getName(), pageable);
-        }
+
+        Page<Ticket> tickets = hasItSupportRole
+                ? ticketRepository.findAll(pageable)
+                : ticketRepository.findByCreatedBy(authentication.getName(), pageable);
+
+        return tickets;
     }
 
     @Override
-    public Optional<Ticket> updateTicket(Long id, Ticket ticket) {
-        return Optional.empty();
+    public Ticket updateTicket(Long id, TicketDto ticketDto, Authentication authentication) {
+
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(null);
+
+        TicketCategory ticketCategory = ticketCategoryService.getTicketCategoryByName(String.valueOf(ticketDto.getCategory()));
+        ticket.setTitle(ticketDto.getTitle());
+        ticket.setDescription(ticketDto.getDescription());
+        ticket.setModifiedBy(authentication.getName());
+        ticket.setLastModifiedDate(new Date().toInstant());
+        ticket.setPriority(TicketPriority.valueOf(ticketDto.getPriority()));
+        ticket.setStatus(TicketStatus.valueOf(ticketDto.getStatus()));
+        ticket.setCategory(ticketCategory);
+        return ticketRepository.save(ticket);
     }
 
 

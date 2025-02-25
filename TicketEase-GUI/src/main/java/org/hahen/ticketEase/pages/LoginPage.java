@@ -5,6 +5,7 @@ import org.hahen.ticketEase.configurations.GlobalVariables;
 import org.hahen.ticketEase.models.LoginFormDto;
 import org.hahen.ticketEase.models.TokenDto;
 import org.hahen.ticketEase.services.AuthenticationService;
+import org.hahen.ticketEase.util.JwtTools;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,19 +13,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+import static org.hahen.ticketEase.enums.Scope.IT_SUPPORT;
+
 public class LoginPage extends JFrame {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton loginButton;
     private JLabel statusLabel;
-    private AuthenticationService authenticationService;
 
-    // Constructor for the LoginPage
     public LoginPage() {
         initializeUI();
     }
 
-    // UI Initialization and setup
+
     private void initializeUI() {
         setTitle("Login");
         setSize(400, 300);
@@ -32,14 +33,12 @@ public class LoginPage extends JFrame {
         setLocationRelativeTo(null); // Center on screen
         setLayout(new MigLayout("wrap 2", "[grow,fill]", "[]10[]10[]10[]"));
 
-        // Set Look and Feel for better aesthetics
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
         }
 
-        // Set a custom font for the entire frame
         Font customFont = new Font("Segoe UI", Font.PLAIN, 14);
         UIManager.put("Label.font", customFont);
         UIManager.put("TextField.font", customFont);
@@ -63,7 +62,7 @@ public class LoginPage extends JFrame {
         ));
         add(usernameField);
 
-        // Password label and field
+
         JLabel passwordLabel = new JLabel("Password:");
         passwordLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
         add(passwordLabel);
@@ -118,26 +117,22 @@ public class LoginPage extends JFrame {
     private void handleLogin() {
         new Thread(() -> {
             try {
-                // Prepare login form data
+
                 LoginFormDto loginFormDto = createLoginForm();
-
-                // Perform authentication and get the token
-                TokenDto tokenDto = AuthenticationService.login(loginFormDto);
-
-                // On success, update UI and navigate
+                AuthenticationService.login(loginFormDto);
                 SwingUtilities.invokeLater(() -> {
                     statusLabel.setText("Login Successful");
-                    System.out.println("Auth Token: " + GlobalVariables.getAuthToken());
+                   GlobalVariables.IT_SUPPORT_USER  = JwtTools.hasItSupportScope(GlobalVariables.getAuthToken());
                 });
 
-                dispose(); // Close login page
-                new DashBoardPage().show(); // Open the dashboard
+                dispose();
+                new DashBoardPage().show();
 
             } catch (IOException ex) {
                 SwingUtilities.invokeLater(() -> statusLabel.setText("Login Failed"));
-                ex.printStackTrace(); // Log error for debugging
+                ex.printStackTrace();
             } catch (Exception ex) {
-                ex.printStackTrace(); // Handle any other exceptions
+                ex.printStackTrace();
                 throw new RuntimeException(ex);
             }
         }).start();
@@ -146,10 +141,8 @@ public class LoginPage extends JFrame {
     // Create LoginFormDto from user input
     private LoginFormDto createLoginForm() {
         LoginFormDto loginFormDto = new LoginFormDto();
-        // loginFormDto.setUsername(usernameField.getText());
-        loginFormDto.setUsername("itSupport");
-        loginFormDto.setPassword(new String("12345"));
-        //loginFormDto.setPassword(new String(passwordField.getPassword()));
+         loginFormDto.setUsername(usernameField.getText());
+         loginFormDto.setPassword(new String(passwordField.getPassword()));
         return loginFormDto;
     }
 }

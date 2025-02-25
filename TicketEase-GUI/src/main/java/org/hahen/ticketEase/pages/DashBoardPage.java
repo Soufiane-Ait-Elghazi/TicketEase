@@ -3,6 +3,7 @@ package org.hahen.ticketEase.pages;
 import org.hahen.ticketEase.components.SidebarComponent;
 import org.hahen.ticketEase.components.HeaderComponent;
 import org.hahen.ticketEase.components.FooterComponent;
+import org.hahen.ticketEase.configurations.GlobalVariables;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.awt.*;
 public class DashBoardPage {
     private JFrame frame;
     private JPanel contentPanel;
-    private CardLayout cardLayout;
+    public CardLayout cardLayout;
 
     public DashBoardPage() throws Exception {
 
@@ -27,9 +28,12 @@ public class DashBoardPage {
         cardLayout = new CardLayout();
         contentPanel.setLayout(cardLayout);
 
-        contentPanel.add(new HomePage(this).createPage(), "Home");
-        contentPanel.add(new TicketsPage(this).createPage(), "Tickets");
-        contentPanel.add(new NewTicketPage(this).createPage(), "NewTicket");
+        contentPanel.add(new HomePage().createPage(), "Home");
+        contentPanel.add(new TicketsPage().createPage(), "Tickets");
+        contentPanel.add(new NewTicketPage().createPage(), "NewTicket");
+       // contentPanel.add(new UpdateTicketPage().createPage(), "UpdateTicket");
+
+        GlobalVariables.GLOBAL_DashBoard = this;
 
         frame.add(header, BorderLayout.NORTH);
         frame.add(sidebar, BorderLayout.WEST);
@@ -37,8 +41,8 @@ public class DashBoardPage {
         frame.add(footer, BorderLayout.SOUTH);
     }
 
-    public void switchPage(String pageName, DashBoardPage dashBoardPage) throws Exception {
-        this.cardLayout = dashBoardPage.cardLayout;
+    public void switchPage(String pageName) throws Exception {
+        this.cardLayout = GlobalVariables.GLOBAL_DashBoard.cardLayout;
         cardLayout.show(contentPanel, pageName);
     }
 
@@ -46,21 +50,41 @@ public class DashBoardPage {
         frame.setVisible(true);
     }
 
-    public void showTicketDetails(Long ticketId,DashBoardPage dashBoardPage) throws Exception {
-        this.cardLayout = dashBoardPage.cardLayout ;
-        TicketDetailsPage ticketDetailsPage = new TicketDetailsPage(ticketId, this);
-        JPanel ticketPanel = ticketDetailsPage.createPage();
-        contentPanel.removeAll();
-        contentPanel.add(ticketPanel, "Ticket Details");
-        cardLayout.show(contentPanel, "Ticket Details");
-
-       /* contentPanel.add(new TicketDetailsPage(ticketId,this).createPage(), "TicketDetails");
-        switchPage("Tickets",this);**/
+    public void showTicketDetails() throws Exception {
+        this.cardLayout = GlobalVariables.GLOBAL_DashBoard.cardLayout;
+        TicketDetailsPage ticketDetailsPage = new TicketDetailsPage();
+        contentPanel.add(ticketDetailsPage.createPage(), "TicketDetails");
+        cardLayout.show(contentPanel, "TicketDetails");
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 
-    public void showTickets(DashBoardPage dashBoardPage) throws Exception {
-        this.cardLayout = dashBoardPage.cardLayout ;
-        contentPanel.add(new TicketsPage(this).createPage(), "Tickets");
-        switchPage("Tickets",this);
+    public void showTickets() throws Exception {
+        this.cardLayout = GlobalVariables.GLOBAL_DashBoard.cardLayout;
+        if (!isPageAlreadyAdded("Tickets")) {
+            contentPanel.add(new TicketsPage().createPage(), "Tickets");
+        }
+        cardLayout.show(contentPanel, "Tickets");
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }
+
+    private boolean isPageAlreadyAdded(String pageName) {
+        for (Component comp : contentPanel.getComponents()) {
+            if (pageName.equals(comp.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void updateTicket() throws Exception {
+        this.cardLayout = GlobalVariables.GLOBAL_DashBoard.cardLayout;
+        if (!isPageAlreadyAdded("UpdateTicket")) {
+            contentPanel.add(new UpdateTicketPage().createPage(), "UpdateTicket");
+        }
+        cardLayout.show(contentPanel, "UpdateTicket");
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 }

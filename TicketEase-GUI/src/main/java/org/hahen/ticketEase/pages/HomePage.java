@@ -1,12 +1,13 @@
 package org.hahen.ticketEase.pages;
 
+import org.hahen.ticketEase.configurations.GlobalVariables;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class HomePage extends JPanel {
-    private DashBoardPage dashBoardPage;
-    public HomePage(DashBoardPage dashBoardPage) {
-        this.dashBoardPage = dashBoardPage;
+
+    public HomePage() {
         setLayout(new GridBagLayout());
         setBackground(Color.WHITE);
         add(createPage(), new GridBagConstraints());

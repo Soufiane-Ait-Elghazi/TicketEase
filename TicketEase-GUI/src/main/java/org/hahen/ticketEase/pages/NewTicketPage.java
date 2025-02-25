@@ -1,5 +1,6 @@
 package org.hahen.ticketEase.pages;
 
+import org.hahen.ticketEase.configurations.GlobalVariables;
 import org.hahen.ticketEase.enums.TicketPriority;
 import org.hahen.ticketEase.models.TicketDto;
 import org.hahen.ticketEase.services.TicketService;
@@ -12,14 +13,11 @@ import static org.hahen.ticketEase.services.TicketCategoryService.fetchTicketCat
 
 public class NewTicketPage {
 
-    private DashBoardPage dashboard;
 
-    // Constructor accepts a reference to the dashboard for page switching
-    public NewTicketPage(DashBoardPage dashboard) {
-        this.dashboard = dashboard;
-    }
 
-    // Creates and returns the new ticket creation panel
+    public NewTicketPage() {}
+
+
     public JPanel createPage() throws Exception {
         JPanel panel = new JPanel(new BorderLayout());
 
@@ -83,10 +81,10 @@ public class NewTicketPage {
         gbc.gridy = 4;
         gbc.anchor = GridBagConstraints.EAST;
         JButton submitButton = new JButton("Submit Ticket");
-        submitButton.setBackground(new Color(57, 103, 163)); // Matching color
-        submitButton.setForeground(Color.WHITE);  // White text for contrast
-        submitButton.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size for button
-        submitButton.setPreferredSize(new Dimension(200, 50)); // Increased button size
+        submitButton.setBackground(new Color(57, 103, 163));
+        submitButton.setForeground(Color.WHITE);
+        submitButton.setFont(new Font("Arial", Font.BOLD, 18));
+        submitButton.setPreferredSize(new Dimension(200, 50));
         submitButton.addActionListener(e -> {
             // Validate fields before submitting
             if (titleField.getText().isEmpty() || descriptionArea.getText().isEmpty() || categoryCombo.getSelectedIndex() == -1) {
@@ -103,8 +101,8 @@ public class NewTicketPage {
                 try {
                     TicketDto createdTicketDto = TicketService.newTicket(newTicketDto);
                     JOptionPane.showMessageDialog(panel, "Ticket submitted successfully!");
-                    // Optionally, switch to the Tickets page after submission:
-                    dashboard.showTicketDetails(createdTicketDto.getId(), dashboard); // Example, pass actual ID
+                    GlobalVariables.TICKET_ID = Math.toIntExact(createdTicketDto.getId());
+                    GlobalVariables.GLOBAL_DashBoard.showTicketDetails();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(panel, "Error occurred while submitting the ticket.", "Submission Error", JOptionPane.ERROR_MESSAGE);

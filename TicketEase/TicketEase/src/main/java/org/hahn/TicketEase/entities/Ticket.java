@@ -36,6 +36,8 @@ public class Ticket extends AbstractEntity {
     @JsonIgnore
     private TicketCategory category;
 
+
+
     @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL)
     @JsonIgnore
     private List<TicketComment> comments;

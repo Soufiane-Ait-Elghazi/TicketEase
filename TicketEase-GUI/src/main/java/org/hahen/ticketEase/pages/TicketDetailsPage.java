@@ -1,5 +1,6 @@
 package org.hahen.ticketEase.pages;
 
+import org.hahen.ticketEase.configurations.GlobalVariables;
 import org.hahen.ticketEase.models.TicketCommentDto;
 import org.hahen.ticketEase.models.TicketDto;
 import org.hahen.ticketEase.services.TicketCommentService;
@@ -12,16 +13,14 @@ import java.util.List;
 public class TicketDetailsPage {
     private Long ticketId;
     private TicketDto ticketDto;
-    private DashBoardPage dashBoardPage;
     private JButton backButton;
     private JButton addCommentButton;
     private JTextArea commentInput;
     private JPanel commentsPanel;
 
     // Constructor accepts a reference to the dashboard for page switching
-    public TicketDetailsPage(Long ticketId, DashBoardPage dashBoardPage) {
-        this.ticketId = ticketId;
-        this.dashBoardPage = dashBoardPage;
+    public TicketDetailsPage( ) {
+        this.ticketId = GlobalVariables.TICKET_ID;
         this.backButton = new JButton("Back");
         this.addCommentButton = new JButton("Add Comment");
         this.commentInput = new JTextArea(5, 30);  // Set size for the comment input area
@@ -65,11 +64,11 @@ public class TicketDetailsPage {
 
         // Back Button Styling
         ticketDetailsPanel.add(backButton); // Add the back button at the bottom
-        backButton.setBackground(new Color(211, 210, 210)); // Set background color of button to match header
-        backButton.setForeground(Color.WHITE); // Set text color to white
-        backButton.setPreferredSize(new Dimension(150, 40)); // Size the button appropriately
-        backButton.setFont(new Font("Arial", Font.BOLD, 14)); // Bold text for the button
-        backButton.setBorder(BorderFactory.createLineBorder(new Color(211, 210, 210), 2)); // Border color matches the theme
+        backButton.setBackground(new Color(211, 210, 210));
+        backButton.setForeground(Color.WHITE);
+        backButton.setPreferredSize(new Dimension(300, 40));
+        backButton.setFont(new Font("Arial", Font.BOLD, 14));
+        backButton.setBorder(BorderFactory.createLineBorder(new Color(210, 210, 211), 2));
 
         // Add comment field and button below the ticket details (on the same side)
         JPanel commentSectionPanel = new JPanel();
@@ -85,14 +84,14 @@ public class TicketDetailsPage {
         // Right panel for displaying comments (with scroll)
         JPanel commentsPanel = new JPanel();
         commentsPanel.setLayout(new BoxLayout(commentsPanel, BoxLayout.Y_AXIS));
-        commentsPanel.setBackground(new Color(255, 255, 255));  // White background for comments
+        commentsPanel.setBackground(new Color(255, 255, 255));
 
-        // Create a JScrollPane for the comments panel to make it scrollable
+
         JScrollPane commentsScrollPane = new JScrollPane(commentsPanel);
-        commentsScrollPane.setPreferredSize(new Dimension(400, 300)); // Set size for the comments panel
-        commentsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);  // Always show vertical scrollbar
+        commentsScrollPane.setPreferredSize(new Dimension(400, 300));
+        commentsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 
-        // Display existing comments
+
         List<TicketCommentDto> comments = TicketCommentService.getTicketComments(ticketId);
         commentsPanel.add(createLabel("Comments:", Color.DARK_GRAY));
         if (comments != null && !comments.isEmpty()) {
@@ -120,7 +119,7 @@ public class TicketDetailsPage {
         backButton.addActionListener(e -> {
             try {
                 System.out.println("Back button clicked. Going back to Tickets page.");
-                dashBoardPage.showTickets(dashBoardPage);
+                GlobalVariables.GLOBAL_DashBoard.showTickets();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -280,7 +279,7 @@ public class TicketDetailsPage {
     private void navigateBack() {
         try {
             System.out.println("Back button clicked. Going back to Tickets page.");
-            dashBoardPage.showTickets(dashBoardPage);
+            GlobalVariables.GLOBAL_DashBoard.showTickets();
         } catch (Exception ex) {
             ex.printStackTrace();
         }

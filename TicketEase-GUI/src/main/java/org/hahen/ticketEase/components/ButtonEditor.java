@@ -1,7 +1,7 @@
 package org.hahen.ticketEase.components;
 
+import org.hahen.ticketEase.configurations.GlobalVariables;
 import org.hahen.ticketEase.pages.DashBoardPage;
-import org.hahen.ticketEase.services.AuthenticationService;
 import org.hahen.ticketEase.services.TicketService;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor 
     private final JButton deleteButton = new JButton("Delete");
     private Long ticketId;
 
-    public ButtonEditor(JTable table, DashBoardPage dashBoardPage) {
+    public ButtonEditor(JTable table) {
         panel.add(viewButton);
         panel.add(editButton);
         panel.add(deleteButton);
@@ -24,7 +24,8 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor 
 
         viewButton.addActionListener(e -> {
             try {
-                openTicketDetails(ticketId, dashBoardPage);
+                GlobalVariables.TICKET_ID = Math.toIntExact(ticketId);
+                GlobalVariables.GLOBAL_DashBoard.showTicketDetails();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -32,7 +33,12 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor 
 
         // Edit button action
         editButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(null, "Editing ticket ID: " + ticketId);
+            try {
+                GlobalVariables.TICKET_ID = Math.toIntExact(ticketId);
+                GlobalVariables.GLOBAL_DashBoard.updateTicket();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         });
 
         // Delete button action
@@ -48,7 +54,7 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor 
             if (choice == JOptionPane.YES_OPTION) {
                 try {
                     if(TicketService.deleteTicketById(ticketId))
-                        dashBoardPage.showTickets(dashBoardPage);
+                        GlobalVariables.GLOBAL_DashBoard.showTickets();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -59,9 +65,8 @@ public class ButtonEditor extends AbstractCellEditor implements TableCellEditor 
         });
     }
 
-    private void openTicketDetails(Long ticketId, DashBoardPage dashBoardPage) throws Exception {
-        dashBoardPage.showTicketDetails(ticketId,dashBoardPage);
-    }
+
+
 
     @Override
     public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {

@@ -19,7 +19,7 @@ import static org.hahen.ticketEase.services.TicketCategoryService.fetchTicketCat
 
 public class TicketsPage {
 
-    private final DashBoardPage dashBoardPage;
+
     private JTable ticketTable;
     private DefaultTableModel tableModel;
     private PaginationComponent paginationComponent;
@@ -31,9 +31,7 @@ public class TicketsPage {
     private int currentPage = 0;
     private int totalPages = 1;
 
-    public TicketsPage(DashBoardPage dashBoardPage) {
-        this.dashBoardPage = dashBoardPage;
-    }
+    public TicketsPage() {}
 
     public JPanel createPage() throws Exception {
         JPanel panel = new JPanel(new BorderLayout());
@@ -161,7 +159,7 @@ public class TicketsPage {
             });
         }
         ticketTable.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
-        ticketTable.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(ticketTable,dashBoardPage));
+        ticketTable.getColumnModel().getColumn(5).setCellEditor(new ButtonEditor(ticketTable));
     }
 }
 

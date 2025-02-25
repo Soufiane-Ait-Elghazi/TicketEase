@@ -85,4 +85,19 @@ public class TicketService {
         return objectMapper.readValue(response.body(),
                 objectMapper.getTypeFactory().constructType(TicketDto.class));
     }
+
+    public static TicketDto updateTicket(Long ticketId, TicketDto ticketDto) throws Exception {
+        System.out.println(GlobalVariables.BASE_API_URL + "/updateTicket/"+ticketId);
+        HttpResponse<String> response = Http.sendRequest(
+                HttpMethods.PUT,
+                GlobalVariables.BASE_API_URL + "/updateTicket/"+ticketId,
+                null,
+                ticketDto
+        );
+        if (response.statusCode() != 201) {
+            throw new Exception("Failed to fetch tickets. HTTP Status: " + response.statusCode());
+        }
+        return objectMapper.readValue(response.body(),
+                objectMapper.getTypeFactory().constructType(TicketDto.class));
+    }
 }

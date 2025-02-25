@@ -4,11 +4,15 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
+import static org.hahen.ticketEase.configurations.GlobalVariables.IT_SUPPORT_USER;
+
 public class ButtonRenderer extends JPanel implements TableCellRenderer {
     public ButtonRenderer() {
         setLayout(new FlowLayout(FlowLayout.LEFT));
         add(new JButton("View"));
-        add(new JButton("Edit"));
+        if(IT_SUPPORT_USER){
+            add(new JButton("Edit"));
+        }
         add(new JButton("Delete"));
     }
 
