@@ -157,11 +157,11 @@ java -jar target/TicketEase-GUI.jar
 ---
 
 ## 📑 License
-This project is licensed under the **MIT License**.
+my code is your code
 
 ## 📞 Contact
 For inquiries or support, reach out at:
-📧 your-email@example.com  
+📧 soufianeaitelghazi@gmail.com  
 🌐 GitHub Repository
 
 ---
