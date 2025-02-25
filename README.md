@@ -202,4 +202,14 @@ For inquiries or support, reach out at:
 | - Ensure README setup guide | Done        | |
 
 ---
+🔹 Database Initialization
 
+At the start of the application, the database is pre-filled with some fake data for testing purposes. This includes:
+
+Ticket categories (e.g., Network, Hardware, Software)
+
+Sample tickets assigned to these categories
+
+Random comments added to each ticket
+
+This initialization is done using a CommandLineRunner bean in the Spring Boot application.
