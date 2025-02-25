@@ -50,7 +50,7 @@ TicketEase is a ticket management system designed for efficient issue tracking. 
 
 ### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/your-repo/TicketEase.git
+git clone https://github.com/Soufiane-Ait-Elghazi/TicketEase.git
 cd TicketEase
 ```
 
@@ -157,11 +157,11 @@ java -jar target/TicketEase-GUI.jar
 ---
 
 ## 📑 License
-This project is licensed under the **MIT License**.
+my code is your code
 
 ## 📞 Contact
 For inquiries or support, reach out at:
-📧 your-email@example.com  
+📧 soufianeaitelghazi@gmail.com  
 🌐 GitHub Repository
 
 ---
@@ -202,4 +202,14 @@ For inquiries or support, reach out at:
 | - Ensure README setup guide | Done        | |
 
 ---
+🔹 Database Initialization
 
+At the start of the application, the database is pre-filled with some fake data for testing purposes. This includes:
+
+Ticket categories (e.g., Network, Hardware, Software)
+
+Sample tickets assigned to these categories
+
+Random comments added to each ticket
+
+This initialization is done using a CommandLineRunner bean in the Spring Boot application.
